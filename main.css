@@ -1,0 +1,65 @@
+* {font-weight: 300;}
+textarea, input, button {outline: none;}
+body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;}
+
+h1 {
+  margin: 0 auto;
+  font-size: 72px;
+  background: -webkit-linear-gradient(#A1FFCE, #FAFFD1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+h2 {
+  font-weight: 300;
+  margin: 0;
+  font-size: 36px;
+  padding: 8px;
+}
+
+.goal-header {
+  color: #fff;
+  margin-bottom: 8px;
+}
+.daily {
+  background: #ff6b6b;
+}
+
+.weekly {
+  background: #48dbfb;
+}
+
+.yearly {
+  background: #1dd1a1;
+}
+
+.all-goals {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px;
+}
+.goal-section {
+  height: 50vh;
+  width: 33%;
+  margin: 24px;
+  flex-grow: 1;
+  text-align: center;
+  box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+  overflow: scroll;
+}
+
+.goal-input {
+  border: none;
+  border-bottom: 1px solid #b2b2b2;
+  width: 95%;
+  
+}
+
+.goal-item {
+  font-size: 2em;
+  padding: 4px;
+}
+
+.goal-info {
+  margin-top: 400px;
+  font-style: italic;
+}
