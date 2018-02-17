@@ -1,6 +1,12 @@
 * {font-weight: 300;}
 textarea, input, button {outline: none;}
 body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;}
+input {border: none}
+
+ul { 
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
 
 h1 {
   margin: 0 auto;
@@ -16,50 +22,85 @@ h2 {
   padding: 8px;
 }
 
-.goal-header {
-  color: #fff;
-  margin-bottom: 8px;
-}
-.daily {
-  background: #ff6b6b;
-}
-
-.weekly {
-  background: #48dbfb;
-}
-
-.yearly {
-  background: #1dd1a1;
-}
-
 .all-goals {
   display: flex;
   justify-content: space-between;
   margin: 16px;
 }
+
+.goal-header {
+  color: #fff;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.daily {
+  background: #ff6b6b;
+}
+.weekly {
+  background: #48dbfb;
+}
+.yearly {
+  background: #1dd1a1;
+}
+
+.goal-list {
+  padding: 8px;
+}
+
+
 .goal-section {
   height: 50vh;
   width: 33%;
   margin: 24px;
   flex-grow: 1;
-  text-align: center;
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
   overflow: scroll;
 }
 
-.goal-input {
+.new-goal-input {
   border: none;
   border-bottom: 1px solid #b2b2b2;
+  margin: 8px;
   width: 95%;
-  
+  font-size: 18px;
+}
+.goal-input {
+  font-size: 18px;
 }
 
-.goal-item {
-  font-size: 2em;
-  padding: 4px;
+.goal-div {
+  display: flex; 
+}
+.goal-item label {
+  flex-grow: 1;
 }
 
 .goal-info {
   margin-top: 400px;
   font-style: italic;
 }
+
+.checkbox {
+  order: -1;
+  content: url('uncheck-circle.svg');
+  border: 1px solid balck;
+  margin: 0 4px 4px 0;
+}
+
+
+.x-btn {
+  /* visibility: hidden; */
+  border: none;
+  color: rebeccapurple;
+  font-size: inherit;
+}
+
+.x-btn:hover {
+  color: plum;
+}
+.goal-divhover + .x-btn{ 
+  visibility: visible;
+}
+
+
+
