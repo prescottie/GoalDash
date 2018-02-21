@@ -5,42 +5,81 @@
     <title>New Tab</title>
     <link rel="stylesheet" type="text/css" href="/main.css">
     <link rel="manifest" href="/manifest.json">
+   
   </head>
   <body>
-    <h1>Set your Goals!</h1>
+    <div class="header">
+      <span class='logo'></span>
+      <span class='tagline'><span class="get">GET </span><span class="something">SOMETHING </span><span class="done">DONE!</span></span>
+      <time id="timestamp"></time>
+    </div>
     <div class="content-wrapper">
+      <div id='quotebox'></div>
       <div class="all-goals">
         <div class="goal-section">
-          <h2 class="goal-header daily">Today</h2>
+          <h2 class="goal-header daily">Today 📅</h2>
           <div class="goal-list">
-            <span class="goal-info">What can you do today, that will help you achieve your weekly goals?</span>
+            <span class="goal-info">What can you do today to help you achieve your weekly goals?</span>
             <br>
-            <input id='dailyGoal' class="new-goal-input" placeholder="Get er done!" type="text">
+            <br>
+            <input id='dailyGoal' class="new-goal-input" placeholder="Today I will..." type="text">
             <ul id="dailyGoalList"></ul>
           </div>
         </div>
         <div class="goal-section">
-          <h2 class="goal-header weekly">This Week</h2>
+          <h2 class="goal-header weekly">This Week 📆</h2>
           <div class="goal-list">
-            <span class="goal-info">What can you do today, that will help you achieve your weekly goals?</span>
+            <span class="goal-info">This week I'm going to crush it by doing all of these, which will help me achieve my yearly goals.</span>
             <br>
-            <input id='weeklyGoal' class="new-goal-input" placeholder="Get er done!" type="text">
+            <br>
+            <input id='weeklyGoal' class="new-goal-input" placeholder="This week I will..." type="text">
             <ul id="weeklyGoalList"></ul>
           </div>
         </div>
         <div class="goal-section">
-          <h2 class="goal-header yearly">This Year</h2>
+          <h2 class="goal-header yearly">This Year 🗓</h2>
           <div class="goal-list">
-            <span class="goal-info">What can you do today, that will help you achieve your weekly goals?</span>
+            <span class="goal-info">This year I'm going to crush it by accomplishing all of these things!</span>
             <br>
-            <input id='yearlyGoal' class="new-goal-input" placeholder="Get er done!" type="text">
+            <br>
+            <input id='yearlyGoal' class="new-goal-input" placeholder="This year I will..." type="text">
             <ul id="yearlyGoalList"></ul>
           </div>
         </div>
       </div>
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><rect width='80' height='80' fill="none" stroke="#ededed" stroke-width="5"/></svg>
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>
+      <div class="get-started">
+      <div id="startYear" class="starting-section hidden">
+        <h2 class="start-header">Let's get down to business 🎯</h2>
+        <div class="start-form">
+          <br>
+          <span class="start-info">Let's start by setting 1 goal for this year. You can get a lot done in one year, so dream big! <br>If you're not sure where to start get some <a>help</a>.</span>
+          <br>
+          <br>
+          <input id='yearStartInput' class="start-input" placeholder="What's your goal?" type="text">
+        </div>
+      </div>
+      <div id="startWeek" class="starting-section hidden">
+        <h2 class="start-header">Let's get down to business 🎯</h2>
+        <div class="start-form">
+          <br>
+          <span class="start-info">Great! Now let's plan to do something this week, that will help you acheive your yearly goal<br>If you're not sure where to start get some <a>help</a>.</span>
+          <br>
+          <br>
+          <input id='weekStartInput' class="start-input" placeholder="What's your goal?" type="text">
+        </div>
+      </div>
+      <div id='startDay'class="starting-section hidden">
+          <h2 class="start-header">Let's get down to business 🎯</h2>
+          <div class="start-form">
+            <br>
+            <span class="start-info">Awesome! Whats the thing you can do today that will get closer to your weekly goal?<br>If you're not sure where to start get some <a>help</a>.</span>
+            <br>
+            <br>
+            <input id='dayStartInput' class="start-input" placeholder="What's your goal?" type="text">
+          </div>
+        </div>
     </div>
+  </div>
     <script src="index.js"></script>
   </body>
 </html>
