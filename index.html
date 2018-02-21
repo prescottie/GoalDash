@@ -12,6 +12,12 @@
       <span class='logo'></span>
       <span class='tagline'><span class="get">GET </span><span class="something">SOMETHING </span><span class="done">DONE!</span></span>
       <time id="timestamp"></time>
+      <div id='weather'>
+        <span id="weatherIcon"></span>
+        <span id="weatherTemp"></span>
+        <span id="weatherDescript"></span>
+        <span id="weatherCity"></span>
+      </div>
     </div>
     <div class="content-wrapper">
       <div id='quotebox'></div>
@@ -48,34 +54,64 @@
         </div>
       </div>
       <div class="get-started">
-      <div id="startYear" class="starting-section hidden">
-        <h2 class="start-header">Let's get down to business 🎯</h2>
-        <div class="start-form">
-          <br>
-          <span class="start-info">Let's start by setting 1 goal for this year. You can get a lot done in one year, so dream big! <br>If you're not sure where to start get some <a>help</a>.</span>
-          <br>
-          <br>
-          <input id='yearStartInput' class="start-input" placeholder="What's your goal?" type="text">
-        </div>
-      </div>
-      <div id="startWeek" class="starting-section hidden">
-        <h2 class="start-header">Let's get down to business 🎯</h2>
-        <div class="start-form">
-          <br>
-          <span class="start-info">Great! Now let's plan to do something this week, that will help you acheive your yearly goal<br>If you're not sure where to start get some <a>help</a>.</span>
-          <br>
-          <br>
-          <input id='weekStartInput' class="start-input" placeholder="What's your goal?" type="text">
-        </div>
-      </div>
-      <div id='startDay'class="starting-section hidden">
+        <div id="startYear" class="starting-section hidden">
           <h2 class="start-header">Let's get down to business 🎯</h2>
           <div class="start-form">
             <br>
-            <span class="start-info">Awesome! Whats the thing you can do today that will get closer to your weekly goal?<br>If you're not sure where to start get some <a>help</a>.</span>
+            <span class="start-info">Let's start by setting 1 goal for this year. You can get a lot done in one year, so dream big! <br>If you're not sure where to start get some <a class="help">help</a>.</span>
+            <br>
+            <br>
+            <input id='yearStartInput' class="start-input" placeholder="What's your goal?" type="text">
+          </div>
+        </div>
+        <div id="startWeek" class="starting-section hidden">
+          <h2 class="start-header">Let's get down to business 🎯</h2>
+          <div class="start-form">
+            <br>
+            <span class="start-info">Great! Now let's plan to do something this week, that will help you acheive your yearly goal<br>If you're not sure where to start get some <a class="help">help</a>.</span>
+            <br>
+            <br>
+            <input id='weekStartInput' class="start-input" placeholder="What's your goal?" type="text">
+          </div>
+        </div>
+        <div id='startDay'class="starting-section hidden">
+          <h2 class="start-header">Let's get down to business 🎯</h2>
+          <div class="start-form">
+            <br>
+            <span class="start-info">Awesome! Whats the thing you can do today that will get closer to your weekly goal?<br>If you're not sure where to start get some <a class="help">help</a>.</span>
             <br>
             <br>
             <input id='dayStartInput' class="start-input" placeholder="What's your goal?" type="text">
+          </div>
+        </div>
+        <div id='getHelp' class="get-help hidden">
+          <h2 class="help-header">Goal Setting 101</h2>
+          <div class="help-section">
+            <ol class="help-ol">
+              <li>Set <span class="bold">SMART</span> goals 
+                <ul>
+                  <li><span class="bold">S</span>pecific - set a very clear and well defined goal. Vague or generalized goals don't provide enough direction. Specific goals are easier to break down into smaller more achievable in this year, this month or today? pieces.</li>
+                  <li><span class="bold">M</span>easureable - use precise amounts, so you can measure how successful you are at the end (i.e. Read 12 books this year, instead of just Read...)</li>
+                  <li><span class="bold">A</span>ttainable - make sure your goal is possible. Are you in control of enough of the constraints to acheive this goal? Or, is this something you hope happens but it's really out of your hands.</li>
+                  <li><span class="bold">R</span>elevant - is this goal informed by your smaller more acheiveable goals, and is it moving you towards your bigger more audacious goals?</li>
+                  <li><span class="bold">T</span>imely - goals need a specific timeline. In our case is this goal most achievable in this year, this month or today?</li>
+                </ul>
+              </li>
+              <li><span class="bold">Be accountable.</span> Find a way of being accountable to yourself or someone else. Telling someone what your goals are is a great way to stick to them and be supported to crush them.</li>
+              <li><span class="bold">Make it hurt, or revel in the glory.</span> Try setting up rewards or punishments with the person you are accountable to (yourself and/or someone else). 
+                <ul class="bold">Rewards Example
+                  <li>Did you just acheive a daily goal? Let your self have a snack or short break from work.</li>
+                  <li>Weekly goal? Go out to your favorite restaurant, take an extra day off, go hiking.</li> 
+                  <li>Woah! A yearly goal? Let yourself go away for the weekend</li>
+                </ul>
+                <ul class="bold">Punishment Example
+                  <li>Didn't acheive a daily goal? Withold your favorite snack from your self</li>
+                  <li>Missed a Weekly goal? Call a relative you hate taling on the phone too.</li> 
+                  <li>Woah! A yearly goal? Make a donation to a cause you don't support, or pay $100 to the person keeping you accountable.</li>
+                </ul>
+              </li>
+              <li><span class="bold">Start small.</span> If you're new to goal setting, you'll see better results if start with a smaller more attainable goal and as your progress, make your goals bigger and more audacious. It's better to lose 20lbs over a year than set a goal of 50lbs and not lose any, by being crushed by the 'weight' of your goal.</li>
+            </ol>
           </div>
         </div>
     </div>

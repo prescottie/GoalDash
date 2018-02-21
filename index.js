@@ -1,10 +1,12 @@
-let width = window.innerWidth;
-let height = window.innerHeight;
-let url = `https://source.unsplash.com/featured/${width}x${height}/?nature`;
-let content = document.getElementById('content-wrapper');
-document.body.style.background = `url(${url})`;
-document.body.style.backgroundPositionY = '100px';
-document.body.style.backgroundRepeat = 'no-repeat';  
+function getBackground() {
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let url = `https://source.unsplash.com/featured/${width}x${height}/?nature`;
+  let content = document.getElementById('content-wrapper');
+  document.body.style.background = `url(${url})`;
+  // document.body.style.backgroundPositionY = '100px';
+  // document.body.style.backgroundRepeat = 'no-repeat';
+}
 
 function setGoals(period, goals) { 
   console.log(goals);
@@ -102,11 +104,9 @@ async function saveGoal(period, value) {
 async function removeGoal(period, value) {
   let goals = await getGoals(period);
   let index = goals[period].findIndex(g => g.value === value);
-  // console.log(index);
   if(index > -1) {
     goals[period].splice(index, 1);
   }
-  // console.log(goals);
   chrome.storage.sync.set(goals, () => {
     console.log('goal removed');
   });
@@ -114,7 +114,6 @@ async function removeGoal(period, value) {
 }
 
 function getStarted() {
-  // return new Promise(resolve => {
     let gSection = document.getElementsByClassName('goal-section');
     for(let i = 0; i < gSection.length; i++) {
       gSection[i].classList.add('hidden');
@@ -130,18 +129,11 @@ function getStarted() {
       saveGoal('yearly' , {isDone: false, date: Date.now(), value: yearStartInput.value}); 
       yearStart.classList.add('hidden');
       weekStart.classList.remove('hidden');
-      setTimeout(() => {
-        // document.getElementsByClassName('goal-input')[0].value = yearStartInput.value;
-        getStartedSetGoals('yearly');
-      },100);
     });
     weekStartInput.addEventListener('change', () => {
       saveGoal('weekly' , {isDone: false, date: Date.now(), value: weekStartInput.value});
       weekStart.classList.add('hidden');
       dayStart.classList.remove('hidden');
-      setTimeout(() => {
-        getStartedSetGoals('weekly');
-      },100);
     });
     dayStartInput.addEventListener('change', () => {
       saveGoal('daily' , {isDone: false, date: Date.now(), value: dayStartInput.value});
@@ -149,16 +141,8 @@ function getStarted() {
       for(let i = 0; i < gSection.length; i++) {
         gSection[i].classList.remove('hidden');
       }
+      document.getElementById('getHelp').classList.add('hidden');
     }); 
-   
-  //   resolve();
-  // });
-}
-
-async function getStartedSetGoals(period) {
-  let p = await getGoals(period);
-  console.log('getstarted ', p);
-  setGoals(period, p);
 }
 
 async function initGoals() {
@@ -220,6 +204,53 @@ function getQuote() {
 
   });
 }
+
+function getLocation() {
+  if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(getWeather);
+  } else {
+    console.log('Location unavailable');
+  }
+}
+
+function getWeather(position) {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude
+  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&APPID=5532a9cf8f9fc2b07e8d2b32baf440e4`, {
+    method: 'GET'
+  }).then(res => res.json())
+  .then(weather => {
+    console.log(weather);
+    const icon = getWeatherIcon(weather.weather[0].icon);
+    const temp = Math.round(weather.main.temp);
+    document.getElementById('weatherCity').innerHTML = weather.name;
+    document.getElementById('weatherTemp').innerHTML = temp + "°";
+    document.getElementById('weatherDescript').innerHTML = weather.weather[0].description;
+    document.getElementById('weatherIcon').innerHTML = icon;
+  })
+}
+
+function getWeatherIcon(iconID) {
+  if(iconID === '01d') {
+    return "☀️";
+  } else if (iconID === '01n') {
+    return "🌙" ;
+  } else if (iconID === '02d') {
+    return "⛅";
+  } else if (iconID === '02n') {
+    return "☁️";
+  } else if (iconID === '03d' || iconID === '03n' || iconID === '04d' || iconID === '04n') {
+    return "☁️";
+  } else if (iconID === '09d' || iconID === '09n' || iconID === '10d' || iconID === '10d') {
+    return "🌧";
+  } else if (iconID === '11d' || iconID === '11n') {
+    return "🌩";
+  } else if (iconID === '13d' || iconID === '13n') {
+    return "❄️";
+  } else {
+    return false;
+  }
+}
  
 const dailyGoalInput = document.getElementById('dailyGoal');
 dailyGoalInput.addEventListener('change', () => { 
@@ -239,6 +270,21 @@ yearlyGoalInput.addEventListener('change', () => {
   yearlyGoalInput.value = '';
 });
 
+const helpBtn = document.getElementsByClassName('help');
+for (let i = 0; i < helpBtn.length; i++) {
+  helpBtn[i].addEventListener('click', () => {
+    const helpBox = document.getElementById('getHelp');
+    if (helpBox.getAttribute('class') === "get-help hidden") {
+      helpBox.classList.remove('hidden');
+      console.log('true hidden');
+      
+    } else {
+      helpBox.classList.add('hidden');
+      console.log('falsehidden');
+    }
+  });
+}
+
 function startTime() {
   let today = new Date();
   let h = today.getHours();
@@ -254,7 +300,9 @@ function checkTime(i) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  getBackground();
   initGoals();
   getQuote();
   startTime();
+  getLocation();
 });
