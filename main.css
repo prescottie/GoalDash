@@ -102,7 +102,7 @@ h2 {
 .start-input {
   margin-bottom: 24px;
 }
-.goal-input {
+.goal-span {
   text-align: left;
   font-size: 18px;
   flex-grow: 1;

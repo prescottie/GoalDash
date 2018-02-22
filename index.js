@@ -4,13 +4,9 @@ function getBackground() {
   let url = `https://source.unsplash.com/featured/${width}x${height}/?nature`;
   let content = document.getElementById('content-wrapper');
   document.body.style.background = `url(${url})`;
-  // document.body.style.backgroundPositionY = '100px';
-  // document.body.style.backgroundRepeat = 'no-repeat';
 }
 
 function setGoals(period, goals) { 
-  console.log(goals);
-  
   if(!goals[period]) {
     return false;
   } else {
@@ -21,7 +17,7 @@ function setGoals(period, goals) {
     goals[period].forEach((goal,i) => {
       const li = document.createElement("li");
       const div = document.createElement('div');
-      const input = document.createElement('span');
+      const span = document.createElement('span');
       const xButton = document.createElement('button');
       const checkbox = document.createElement('span');
       checkbox.addEventListener('click', () => {
@@ -34,25 +30,22 @@ function setGoals(period, goals) {
       });
 
       goal.isDone ? toggleClass(checkbox, 'unchecked', 'checked') : toggleClass(checkbox, 'checked', 'unchecked');
-      // input.setAttribute('disabled', 'disabled');
-      // input.setAttribute('rows', '1');
-      input.innerHTML = goal.value;
-      // input.style.height = 'auto';
+      span.innerHTML = goal.value;
       xButton.setAttribute('data-period', period);
       xButton.setAttribute('data-goal', goal.value);
-      input.classList.add('goal-input');
+      span.classList.add('goal-span');
       li.classList.add('goal-item');
       div.classList.add('goal-div');
       checkbox.classList.add('checkbox');
       xButton.classList.add('x-btn');
       xButton.innerHTML = '&#10005';
       li.append(div);
-      div.append(input);
+      div.append(span);
       div.prepend(checkbox);
       div.append(xButton);
       ol.prepend(li);
-      input.addEventListener('dblclick', () => {
-        input.removeAttribute('disabled');
+      span.addEventListener('dblclick', () => {
+        span.removeAttribute('disabled');
       });
     });
     let x = document.getElementsByClassName('x-btn');
@@ -60,8 +53,6 @@ function setGoals(period, goals) {
       x[i].addEventListener('click', () => {
         let period = window.event.target.getAttribute('data-period');
         let goal = window.event.target.getAttribute('data-goal');
-        // console.log(period);
-        // console.log(goal);
         removeGoal(period, goal)
       });
     }
@@ -220,7 +211,6 @@ function getWeather(position) {
     method: 'GET'
   }).then(res => res.json())
   .then(weather => {
-    console.log(weather);
     const icon = getWeatherIcon(weather.weather[0].icon);
     const temp = Math.round(weather.main.temp);
     document.getElementById('weatherCity').innerHTML = weather.name;
@@ -276,11 +266,8 @@ for (let i = 0; i < helpBtn.length; i++) {
     const helpBox = document.getElementById('getHelp');
     if (helpBox.getAttribute('class') === "get-help hidden") {
       helpBox.classList.remove('hidden');
-      console.log('true hidden');
-      
     } else {
       helpBox.classList.add('hidden');
-      console.log('falsehidden');
     }
   });
 }
