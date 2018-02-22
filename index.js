@@ -299,6 +299,22 @@ function checkTime(i) {
   return i;
 }
 
+document.getElementsByClassName('G')[0].addEventListener('click', () => {
+  if (document.getElementsByClassName('G')[0].getAttribute('class') === 'G active') {
+    document.getElementsByClassName('G')[0].classList.remove('active');
+    let gs = document.getElementsByClassName('goal-section');
+    for(let i =0; i < gs.length; i++) {
+      gs[i].classList.add('hidden');
+    }
+  } else {
+    document.getElementsByClassName('G')[0].classList.add('active');
+    let gs = document.getElementsByClassName('goal-section');
+    for(let i =0; i < gs.length; i++) {
+      gs[i].classList.remove('hidden');
+    }
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   getBackground();
   initGoals();

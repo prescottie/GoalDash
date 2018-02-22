@@ -22,7 +22,7 @@ input:focus {
 
 .logo {
   content: url('gd-name.svg');
-  height: 100px;
+  height: 80px;
   margin: 0;
 }
 
@@ -31,6 +31,11 @@ input:focus {
   flex-grow: 1;
   font-size: 2em;
 }
+
+.tagline span {
+  font-weight: 500;
+}
+
 .get {
   color: var(--daily);
 }
@@ -229,6 +234,14 @@ ul {
   max-height: 50vh;
   overflow: scroll;
 }
+.G {
+  content: url('geo-g.svg');
+  height: 50px;
+  padding: 8px;
+}
+.active {
+  background-color: #FFFFFF65;
+}
 
 #timestamp {
   font-size: 4em;
@@ -249,6 +262,10 @@ ul {
 #weatherTemp, #weatherIcon {
   font-size: 3em;
   padding: 4px;
+}
+
+#weatherDescript, #weatherCity {
+  font-weight: 500;
 }
 
 
