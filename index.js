@@ -44,8 +44,21 @@ function setGoals(period, goals) {
       div.prepend(checkbox);
       div.append(xButton);
       ol.prepend(li);
-      span.addEventListener('dblclick', () => {
-        span.removeAttribute('disabled');
+      span.addEventListener('dblclick', (eDbl) => {
+        console.log(eDbl.target);
+        eDbl.target.setAttribute('contenteditable', 'true');
+        eDbl.target.focus();
+        eDbl.target.addEventListener('keypress', (enter) => {
+          if(enter.keyCode === 13) {
+            enter.target.blur();
+            enter.target.setAttribute('contenteditable', 'false');
+          }
+        });
+        eDbl.target.addEventListener('blur', (eBlur) => {
+          editGoals(xButton.getAttribute('data-period'), xButton.getAttribute('data-goal'), eBlur.target.innerHTML);
+
+          console.log(eBlur.target.innerHTML);
+        });
       });
     });
     let x = document.getElementsByClassName('x-btn');
@@ -53,7 +66,7 @@ function setGoals(period, goals) {
       x[i].addEventListener('click', () => {
         let period = window.event.target.getAttribute('data-period');
         let goal = window.event.target.getAttribute('data-goal');
-        removeGoal(period, goal)
+        removeGoal(period, goal);
       });
     }
   }
@@ -74,6 +87,20 @@ function getGoals(period) {
       }
     });
   });
+}
+
+async function editGoals(period, prevValue, nextValue) {
+  let goals = await getGoals(period);
+  let index = goals[period].findIndex(g => g.value === prevValue);
+  if(!goals[period]) {
+    console.error('error finding goal', prevValue)
+  } else {
+    goals[period][index].value = nextValue;
+    chrome.storage.sync.set(goals, () => {
+      console.log('goal updated');
+    });
+  }
+  setGoals(period, goals);
 }
 
 async function saveGoal(period, value) {
@@ -105,6 +132,7 @@ async function removeGoal(period, value) {
 }
 
 function getStarted() {
+  console.log('get started');
     let gSection = document.getElementsByClassName('goal-section');
     for(let i = 0; i < gSection.length; i++) {
       gSection[i].classList.add('hidden');
@@ -140,12 +168,12 @@ async function initGoals() {
   let daily = await getGoals('daily');
   let weekly = await getGoals('weekly');
   let yearly = await getGoals('yearly');
-  if(daily.daily.length === 0 && weekly.weekly.length === 0 && yearly.yearly.length === 0) {
+  if( !daily.daily && !weekly.weekly && !yearly.yearly) {
     getStarted();  
   } else {
     let date = new Date();
     let d = new Date(daily.daily[0] ? daily.daily[0].date: Date.now());
-    if(date.toLocaleDateString === d.toLocaleDateString) {
+    if(date.toDateString === d.toDateString) {
       setGoals('daily', daily);
       console.log("same day");
     } else {
@@ -159,6 +187,23 @@ async function initGoals() {
   }
 }
 
+function fetchQuote() {
+  fetch('https://quotes.rest/qod?category=inspire', {
+    headers: {
+      "Accept": "application/json"
+    },
+    method: 'GET'
+  }).then(response => response.json())
+  .then(quote => {
+    let q = quote.contents.quotes[0];
+    chrome.storage.sync.set({"quote": q}, () => {
+      console.log('quote set');
+      setQuote(q);
+    });
+    
+  });
+}
+
 function setQuote(quote) {
   const quotebox = document.getElementById('quotebox');
   const quoteContent = document.createElement('h3');
@@ -170,29 +215,22 @@ function setQuote(quote) {
   quoteAuthor.innerHTML = `--${quote.author}`;
 }
 
-function getQuote() {
+function initQuote() {
   chrome.storage.sync.get('quote', (quoteObj) => {
-    let quoteDate = new Date(quoteObj.quote.date);
-    let timeSinceQuote = Date.now() - quoteDate;
-    
-    if(timeSinceQuote > 86400000) {
-      return fetch('https://quotes.rest/qod?category=inspire', {
-        headers: {
-          "Accept": "application/json"
-        },
-        method: 'GET'
-      }).then(response => response.json())
-      .then(quote => {
-        let q = quote.contents.quotes[0];
-        chrome.storage.sync.set({"quote": q}, () => {
-          console.log('quote set');
-        });
-        setQuote(q.quote);
-      });
+    if (quoteObj.quote) {
+      let quoteDate = new Date(quoteObj.quote.date);
+      console.log(quoteDate);
+      let timeSinceQuote = Date.now() - quoteDate;
+      console.log(timeSinceQuote);
+ 
+      if(timeSinceQuote > 86400000) {
+        fetchQuote();
+      } else {
+        setQuote(quoteObj.quote);
+      }
     } else {
-      setQuote(quoteObj.quote);
+      fetchQuote();
     }
-
   });
 }
 
@@ -305,7 +343,7 @@ document.getElementsByClassName('G')[0].addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   getBackground();
   initGoals();
-  getQuote();
+  initQuote();
   startTime();
   getLocation();
 });
