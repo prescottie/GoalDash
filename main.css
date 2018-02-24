@@ -65,8 +65,9 @@ h2 {
 .goal-header {
   color: #fff;
   margin-bottom: 8px;
-  text-align: center;
-  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .daily {
   background: var(--daily);
@@ -76,6 +77,10 @@ h2 {
 }
 .yearly {
   background: var(--yearly);
+}
+
+.cal {
+  padding: 8px;
 }
 
 .goal-list { 
