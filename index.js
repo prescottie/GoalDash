@@ -350,9 +350,17 @@ links.addEventListener('blur', (e) => {
   links.classList.add('hidden');
 });
 
-document.getElementsByClassName('link google-default')[0].addEventListener('click', (e) => {
-  chrome.tabs.update({ url: "chrome-search://local-ntp/local-ntp.html" })
-});
+function updateTabUrl(u) {
+  chrome.tabs.update({ url: u });
+}
+
+let clickableLinks = document.getElementsByClassName('link');
+for(let i = 0; i < clickableLinks.length; i++ ) {
+  clickableLinks[i].addEventListener('click', (e) => {
+    let url = clickableLinks[i].getAttribute('data-url');
+    updateTabUrl(url);
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   getBackground();
