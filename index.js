@@ -1,3 +1,5 @@
+import {timeSince} from './helpers.js';
+
 function getBackground() {
   let width = window.innerWidth;
   let height = window.innerHeight;
@@ -18,6 +20,7 @@ function setGoals(period, goals) {
       const li = document.createElement("li");
       const div = document.createElement('div');
       const span = document.createElement('span');
+      const goalTime = document.createElement('time');
       const xButton = document.createElement('button');
       const checkbox = document.createElement('span');
       checkbox.addEventListener('click', () => {
@@ -31,16 +34,21 @@ function setGoals(period, goals) {
 
       goal.isDone ? toggleClass(checkbox, 'unchecked', 'checked') : toggleClass(checkbox, 'checked', 'unchecked');
       span.innerHTML = goal.value;
+      goalTime.innerHTML = timeSince(goal.date);
       xButton.setAttribute('data-period', period);
       xButton.setAttribute('data-goal', goal.value);
       span.classList.add('goal-span');
       li.classList.add('goal-item');
       div.classList.add('goal-div');
+      goalTime.classList.add('goal-timestamp');
       checkbox.classList.add('checkbox');
       xButton.classList.add('x-btn');
       xButton.innerHTML = '&#10005';
+
+      goalExpired(goal, period, goalTime);
       li.append(div);
       div.append(span);
+      div.append(goalTime);
       div.prepend(checkbox);
       div.append(xButton);
       ol.prepend(li);
@@ -218,10 +226,7 @@ function initQuote() {
   chrome.storage.sync.get('quote', (quoteObj) => {
     if (quoteObj.quote) {
       let quoteDate = new Date(quoteObj.quote.date);
-      console.log(quoteDate);
       let timeSinceQuote = Date.now() - quoteDate;
-      console.log(timeSinceQuote);
- 
       if(timeSinceQuote > 86400000) {
         fetchQuote();
       } else {
@@ -360,6 +365,29 @@ for(let i = 0; i < clickableLinks.length; i++ ) {
     let url = clickableLinks[i].getAttribute('data-url');
     updateTabUrl(url);
   });
+}
+
+
+function goalExpired(goal, period, elm) {
+  switch(period) {
+    case "daily":
+      if(Date.now() - goal.date > 86400000) {
+        elm.style.color = "#FF434C90";
+      } 
+      break;
+    case "weekly":
+      if(Date.now() - goal.date > 604800000) {
+        elm.style.color = "#FF434C90";
+      } 
+      break;
+    case "yearly":
+      if(Date.now() - goal.date > 31536000000) {
+        elm.style.color = "#FF434C90";
+      } 
+      break;
+    default:
+      console.log('Expiration date not found');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
