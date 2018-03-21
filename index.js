@@ -3,7 +3,7 @@ function getBackground() {
   let height = window.innerHeight;
   let url = `https://source.unsplash.com/featured/${width}x${height}/?nature`;
   let content = document.getElementById('content-wrapper');
-  document.body.style.background = `url(${url})`;
+  document.body.style.backgroundImage = `url(${url})`;
 }
 
 function setGoals(period, goals) { 
@@ -200,7 +200,6 @@ function fetchQuote() {
       console.log('quote set');
       setQuote(q);
     });
-    
   });
 }
 
@@ -338,6 +337,21 @@ document.getElementsByClassName('G')[0].addEventListener('click', () => {
       gs[i].classList.remove('hidden');
     }
   }
+});
+
+const links = document.getElementById('links-popover');
+
+document.getElementById('links-trigger').addEventListener('click', (e) => {
+  links.getAttribute('class') === 'hidden' ? links.classList.remove('hidden') : links.classList.add('hidden');
+  links.focus();
+});
+
+links.addEventListener('blur', (e) => {
+  links.classList.add('hidden');
+});
+
+document.getElementsByClassName('link google-default')[0].addEventListener('click', (e) => {
+  chrome.tabs.update({ url: "chrome-search://local-ntp/local-ntp.html" })
 });
 
 document.addEventListener('DOMContentLoaded', () => {

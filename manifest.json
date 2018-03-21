@@ -15,7 +15,8 @@
   "permissions": [
     "activeTab",
     "storage",
-    "geolocation"
+    "geolocation",
+    "tabs"
   ],
 
   "icons": { 
