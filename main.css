@@ -1,7 +1,6 @@
 * {font-weight: 300;}
 textarea, input, button, span, div {outline: none;}
-body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  background: rgba(101,103,101,0.7);
-  background-blend-mode: multiply;}
+body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  background: #37474f;}
 input, textarea {border: none; resize: none;}
 input { padding: 8px;}
 
