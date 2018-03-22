@@ -2,7 +2,7 @@ import {timeSince, toggleClass, startTime, checkTime, updateTabUrl} from './help
 
 function getBackground() {
   let width = window.innerWidth;
-  let height = window.innerHeight + 100;
+  let height = window.innerHeight;
   let url = `https://source.unsplash.com/featured/${width}x${height}/?nature`;
   let content = document.getElementById('content-wrapper');
   document.body.style.backgroundImage = `url(${url})`;
@@ -229,13 +229,23 @@ function initQuote() {
   });
 }
 
+const locationOptions = {
+  enableHighAccuracy: true,
+  timeout: 10000,
+  maximumAge: 0
+};
+
 function getLocation() {
   console.log('getting location');
   if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(getWeather);
+    navigator.geolocation.getCurrentPosition(getWeather, geoError, locationOptions);
   } else {
     console.log('Location unavailable');
   }
+}
+
+function geoError(error) {
+  console.error(error)
 }
 
 function getWeather(position) {
@@ -275,7 +285,7 @@ function getWeatherIcon(iconID) {
   } else if (iconID === '13d' || iconID === '13n') {
     return "❄️";
   } else {
-    return;
+    return "";
   }
 }
  
@@ -326,20 +336,15 @@ document.getElementsByClassName('tool')[0].addEventListener('click', () => {
 });
 
 const links = document.getElementById('links-popover');
-// const linksContainer = document.getElementById('links-container');
-
-// document.body.addEventListener('click', (e) => {
-//   console.log(e.target);
-  
-//   if(e.target !== linksContainer ) {
-//     // links.classList.add('hidden');
-//   }
-// })
 
 document.getElementById('links-trigger').addEventListener('click', (e) => {
   links.getAttribute('class') === 'hidden' ? links.classList.remove('hidden') : links.classList.add('hidden');
+  links.focus();
 });
 
+links.addEventListener('blur', (e) => {
+  links.classList.add('hidden');
+});
 
 let clickableLinks = document.getElementsByClassName('link');
 for(let i = 0; i < clickableLinks.length; i++ ) {
