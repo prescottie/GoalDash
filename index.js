@@ -230,6 +230,7 @@ function initQuote() {
 }
 
 function getLocation() {
+  console.log('getting location');
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(getWeather);
   } else {
@@ -238,12 +239,15 @@ function getLocation() {
 }
 
 function getWeather(position) {
+  console.log('getting weather');
   const lat = position.coords.latitude;
   const lon = position.coords.longitude
   fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&APPID=5532a9cf8f9fc2b07e8d2b32baf440e4`, {
     method: 'GET'
   }).then(res => res.json())
   .then(weather => {
+    console.log(weather);
+    
     const icon = getWeatherIcon(weather.weather[0].icon);
     const temp = Math.round(weather.main.temp);
     document.getElementById('weatherCity').innerHTML = weather.name;
@@ -264,14 +268,14 @@ function getWeatherIcon(iconID) {
     return "☁️";
   } else if (iconID === '03d' || iconID === '03n' || iconID === '04d' || iconID === '04n') {
     return "☁️";
-  } else if (iconID === '09d' || iconID === '09n' || iconID === '10d' || iconID === '10d') {
+  } else if (iconID === '09d' || iconID === '09n' || iconID === '10d' || iconID === '10n') {
     return "🌧";
   } else if (iconID === '11d' || iconID === '11n') {
     return "🌩";
   } else if (iconID === '13d' || iconID === '13n') {
     return "❄️";
   } else {
-    return false;
+    return;
   }
 }
  
@@ -322,13 +326,13 @@ document.getElementsByClassName('tool')[0].addEventListener('click', () => {
 });
 
 const links = document.getElementById('links-popover');
-const linksContainer = document.getElementById('links-container');
+// const linksContainer = document.getElementById('links-container');
 
 // document.body.addEventListener('click', (e) => {
 //   console.log(e.target);
   
 //   if(e.target !== linksContainer ) {
-    // links.classList.add('hidden');
+//     // links.classList.add('hidden');
 //   }
 // })
 
