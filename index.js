@@ -1,8 +1,8 @@
-import {timeSince} from './helpers.js';
+import {timeSince, toggleClass, startTime, checkTime, updateTabUrl} from './helpers.js';
 
 function getBackground() {
   let width = window.innerWidth;
-  let height = window.innerHeight;
+  let height = window.innerHeight + 100;
   let url = `https://source.unsplash.com/featured/${width}x${height}/?nature`;
   let content = document.getElementById('content-wrapper');
   document.body.style.backgroundImage = `url(${url})`;
@@ -44,7 +44,6 @@ function setGoals(period, goals) {
       checkbox.classList.add('checkbox');
       xButton.classList.add('x-btn');
       xButton.innerHTML = '&#10005';
-
       goalExpired(goal, period, goalTime);
       li.append(div);
       div.append(span);
@@ -53,7 +52,6 @@ function setGoals(period, goals) {
       div.append(xButton);
       ol.prepend(li);
       span.addEventListener('dblclick', (eDbl) => {
-        console.log(eDbl.target);
         eDbl.target.setAttribute('contenteditable', 'true');
         eDbl.target.focus();
         eDbl.target.addEventListener('keypress', (enter) => {
@@ -64,8 +62,6 @@ function setGoals(period, goals) {
         });
         eDbl.target.addEventListener('blur', (eBlur) => {
           editGoals(xButton.getAttribute('data-period'), xButton.getAttribute('data-goal'), eBlur.target.innerHTML);
-
-          console.log(eBlur.target.innerHTML);
         });
       });
     });
@@ -78,11 +74,6 @@ function setGoals(period, goals) {
       });
     }
   }
-}
-
-function toggleClass(elm, classRemove, classAdd){
-  elm.classList.remove(classRemove);
-  elm.classList.add(classAdd);
 }
 
 function getGoals(period) {
@@ -314,29 +305,15 @@ for (let i = 0; i < helpBtn.length; i++) {
   });
 }
 
-function startTime() {
-  let today = new Date();
-  let h = today.getHours();
-  let m = today.getMinutes();
-  m = checkTime(m);
-  document.getElementById('timestamp').innerHTML =
-  h + ":" + m;
-  let t = setTimeout(startTime, 500);
-}
-function checkTime(i) {
-  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-  return i;
-}
-
-document.getElementsByClassName('G')[0].addEventListener('click', () => {
-  if (document.getElementsByClassName('G')[0].getAttribute('class') === 'G active') {
-    document.getElementsByClassName('G')[0].classList.remove('active');
+document.getElementsByClassName('tool')[0].addEventListener('click', () => {
+  if (document.getElementsByClassName('tool')[0].getAttribute('class') === 'tool active') {
+    document.getElementsByClassName('tool')[0].classList.remove('active');
     let gs = document.getElementsByClassName('goal-section');
     for(let i =0; i < gs.length; i++) {
       gs[i].classList.add('hidden');
     }
   } else {
-    document.getElementsByClassName('G')[0].classList.add('active');
+    document.getElementsByClassName('tool')[0].classList.add('active');
     let gs = document.getElementsByClassName('goal-section');
     for(let i =0; i < gs.length; i++) {
       gs[i].classList.remove('hidden');
@@ -345,19 +322,20 @@ document.getElementsByClassName('G')[0].addEventListener('click', () => {
 });
 
 const links = document.getElementById('links-popover');
+const linksContainer = document.getElementById('links-container');
+
+// document.body.addEventListener('click', (e) => {
+//   console.log(e.target);
+  
+//   if(e.target !== linksContainer ) {
+    // links.classList.add('hidden');
+//   }
+// })
 
 document.getElementById('links-trigger').addEventListener('click', (e) => {
   links.getAttribute('class') === 'hidden' ? links.classList.remove('hidden') : links.classList.add('hidden');
-  links.focus();
 });
 
-links.addEventListener('blur', (e) => {
-  links.classList.add('hidden');
-});
-
-function updateTabUrl(u) {
-  chrome.tabs.update({ url: u });
-}
 
 let clickableLinks = document.getElementsByClassName('link');
 for(let i = 0; i < clickableLinks.length; i++ ) {

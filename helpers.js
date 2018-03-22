@@ -1,4 +1,7 @@
-
+export function toggleClass(elm, classRemove, classAdd) {
+  elm.classList.remove(classRemove);
+  elm.classList.add(classAdd);
+}
 
 export function timeSince(date) {
   let d = new Date (date);
@@ -86,4 +89,22 @@ export function timeSince(date) {
   } else if(seconds > 31536000 ) {
     return d.toLocaleDateString();
   }
+}
+
+export function startTime() {
+  let today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  m = checkTime(m);
+  document.getElementById('timestamp').innerHTML =
+  h + ":" + m;
+  let t = setTimeout(startTime, 500);
+}
+export function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+
+export function updateTabUrl(u) {
+  chrome.tabs.update({ url: u });
 }
