@@ -169,23 +169,11 @@ async function initGoals() {
   let daily = await getGoals('daily');
   let weekly = await getGoals('weekly');
   let yearly = await getGoals('yearly');
-  if( !daily.daily && !weekly.weekly && !yearly.yearly) {
-    getStarted();  
-  } else {
-    let date = new Date();
-    let d = new Date(daily.daily[0] ? daily.daily[0].date: Date.now());
-    if(date.toDateString === d.toDateString) {
-      setGoals('daily', daily);
-      console.log("same day");
-    } else {
-      chrome.storage.sync.set({'daily': []}, () => {
-        console.log('new day, goals reset');
-      });
-      setGoals('daily', daily);
-    }
-    setGoals('weekly', weekly);
-    setGoals('yearly', yearly);
-  }
+  
+  setGoals('daily', daily);
+  setGoals('weekly', weekly);
+  setGoals('yearly', yearly);
+
 }
 
 function fetchQuote() {
@@ -266,7 +254,7 @@ function getWeather(position) {
     document.getElementById('weatherTemp').innerHTML = temp + "°";
     document.getElementById('weatherDescript').innerHTML = weather.weather[0].description;
     document.getElementById('weatherIcon').innerHTML = icon;
-  })
+  });
 }
 
 function getWeatherIcon(iconID) {
@@ -392,20 +380,19 @@ function getLinks() {
   return new Promise(resolve => {
     chrome.storage.sync.get('links', (links) => {
       if(!links.links) {
+        
         resolve(links = []);
       } else {
         resolve(links.links);
       }
+      
     });
   });
 }
 
 async function saveLink(value) {
   let links = await getLinks();
-    console.log(links);
-    console.log(value);
-    links.push(value);
-
+  links.push(value)
   chrome.storage.sync.set({"links":links}, () => {
     console.log('link saved');
   });
@@ -414,6 +401,10 @@ async function saveLink(value) {
 }
 
 function setLinks(linkArr) {
+  const customLinks = document.getElementById('custom-links');
+  while(customLinks.firstChild) {
+    customLinks.removeChild(customLinks.firstChild);
+  }
   linkArr.forEach((link, i) => {
     console.log('setting link');
     
@@ -430,7 +421,7 @@ function setLinks(linkArr) {
     linkDiv.append(linkIcon)
     linkDiv.append(linkSpan);
 
-    document.getElementById('custom-links').append(linkDiv);
+    customLinks.append(linkDiv);
   });
 }
 
@@ -465,8 +456,8 @@ function goalExpired(goal, period, elm) {
 document.addEventListener('DOMContentLoaded', () => {
   getBackground();
   initGoals();
-  // initLinks();
+  initLinks();
   initQuote();
   startTime();
-  getLocation();
+  // getLocation();
 });
