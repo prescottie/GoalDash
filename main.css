@@ -305,6 +305,7 @@ ul {
   top: 100px;
   flex-wrap: wrap;
   border: 1.125px solid #ccc;
+  z-index: 5;
 }
 
 .link, .link a, .tool {
@@ -313,6 +314,7 @@ ul {
   align-items: center;
   color: #000;
   margin: 8px 16px;
+  max-width: 55px;
 }
 
 .link {
@@ -321,6 +323,8 @@ ul {
 
 .link-icon {
   margin-bottom: 4px;
+  height: 48px;
+  width: 48px;
 }
 
 .goal-timestamp {
@@ -346,4 +350,11 @@ ul {
   background-color: #ffffff90;
 }
 
+.add-link-input {
+  border: 1.125px solid #ccc; 
+}
+
+#custom-links, #default-links{
+  display: flex;
+}
 

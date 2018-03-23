@@ -2,7 +2,7 @@ import {timeSince, toggleClass, startTime, checkTime, updateTabUrl} from './help
 
 function getBackground() {
   let width = window.innerWidth;
-  let height = window.innerHeight;
+  let height = window.innerHeight + 100;
   let url = `https://source.unsplash.com/featured/${width}x${height}/?nature`;
   let content = document.getElementById('content-wrapper');
   document.body.style.backgroundImage = `url(${url})`;
@@ -118,6 +118,8 @@ async function saveGoal(period, value) {
   setGoals(period, goals);
 }
 
+
+
 async function removeGoal(period, value) {
   let goals = await getGoals(period);
   let index = goals[period].findIndex(g => g.value === value);
@@ -232,7 +234,7 @@ function initQuote() {
 const locationOptions = {
   enableHighAccuracy: true,
   timeout: 10000,
-  maximumAge: 0
+  maximumAge: 3600000
 };
 
 function getLocation() {
@@ -335,15 +337,15 @@ document.getElementsByClassName('tool')[0].addEventListener('click', () => {
   }
 });
 
-const links = document.getElementById('links-popover');
+const linksPopover = document.getElementById('links-popover');
 
 document.getElementById('links-trigger').addEventListener('click', (e) => {
-  links.getAttribute('class') === 'hidden' ? links.classList.remove('hidden') : links.classList.add('hidden');
-  links.focus();
+  linksPopover.getAttribute('class') === 'hidden' ? linksPopover.classList.remove('hidden') : linksPopover.classList.add('hidden');
+  // linksPopover.focus();
 });
 
-links.addEventListener('blur', (e) => {
-  links.classList.add('hidden');
+linksPopover.addEventListener('blur', (e) => {
+  // linksPopover.classList.add('hidden');
 });
 
 let clickableLinks = document.getElementsByClassName('link');
@@ -353,6 +355,89 @@ for(let i = 0; i < clickableLinks.length; i++ ) {
     updateTabUrl(url);
   });
 }
+
+const addBtn = document.getElementById('add-link');
+addBtn.addEventListener('click', (e) => {
+  let linkInput = document.createElement('input');
+  linkInput.classList.add('add-link-input');
+  linkInput.value = "http://"
+  addBtn.append(linkInput);
+  linkInput.focus();
+  linkInput.addEventListener('keypress', (e) => {
+    if(e.key === "Enter") {
+      console.log(e.target.value);
+      addLink(linkInput.value);
+      linkInput.blur();
+    }
+  });
+
+  linkInput.addEventListener('blur', (e) => {
+    addBtn.removeChild(document.querySelector('.add-link-input'));
+  });
+});
+
+function addLink(url) {
+  fetch(`https://opengraph.io/api/1.1/site/${url}?app_id=5ab40045c8869a6a06cf1e58`, {
+    headers: {
+      "Accept": "application/json"
+    },
+    method: 'GET'
+  }).then(response => response.json())
+  .then(siteInfo => {
+    saveLink({image: siteInfo.hybridGraph.image, siteName: siteInfo.hybridGraph.site_name, url: url});
+  });
+}
+
+function getLinks() {
+  return new Promise(resolve => {
+    chrome.storage.sync.get('links', (links) => {
+      if(!links.links) {
+        resolve(links = []);
+      } else {
+        resolve(links.links);
+      }
+    });
+  });
+}
+
+async function saveLink(value) {
+  let links = await getLinks();
+    console.log(links);
+    console.log(value);
+    links.push(value);
+
+  chrome.storage.sync.set({"links":links}, () => {
+    console.log('link saved');
+  });
+  console.log('saved link', links);  
+  setLinks(links);
+}
+
+function setLinks(linkArr) {
+  linkArr.forEach((link, i) => {
+    console.log('setting link');
+    
+    let linkDiv = document.createElement('div');
+    linkDiv.classList.add('link');
+    linkDiv.setAttribute('data-url', link.url);
+    let linkIcon = document.createElement('img');
+    linkIcon.classList.add('link-icon');
+    linkIcon.setAttribute('src', link.image);
+    let linkSpan = document.createElement('span');
+    linkSpan.classList.add('link-title');
+    linkSpan.innerHTML = link.siteName;
+
+    linkDiv.append(linkIcon)
+    linkDiv.append(linkSpan);
+
+    document.getElementById('custom-links').append(linkDiv);
+  });
+}
+
+async function initLinks() {
+  let links = await getLinks();
+  setLinks(links);
+} 
 
 
 function goalExpired(goal, period, elm) {
@@ -380,6 +465,7 @@ function goalExpired(goal, period, elm) {
 document.addEventListener('DOMContentLoaded', () => {
   getBackground();
   initGoals();
+  // initLinks();
   initQuote();
   startTime();
   getLocation();

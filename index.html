@@ -16,19 +16,22 @@
           <path fill="#fff" d="M16,20H20V16H16M16,14H20V10H16M10,8H14V4H10M16,8H20V4H16M10,14H14V10H10M4,14H8V10H4M4,20H8V16H4M10,20H14V16H10M4,8H8V4H4V8Z" />
         </svg>
         <div id="links-popover" class="hidden">
-          <div class="link" data-url="chrome-search://local-ntp/local-ntp.html">
-            <img class="link-icon" src="./google-search.svg" alt="">
-            <span class="link-title">Search</span>
+          <div id="default-links">
+            <div class="link" data-url="chrome-search://local-ntp/local-ntp.html">
+              <img class="link-icon" src="./google-search.svg" alt="">
+              <span class="link-title">Search</span>
+            </div>
+            <div class="link" data-url="https://mail.google.com">
+              <img class="link-icon" src="./gmail.svg" alt="">
+              <span class="link-title">Gmail</span>
+            </div>
+            <div class="link" data-url="https://drive.google.com">
+              <img class="link-icon" src="./drive.svg" alt="">
+                <span class="link-title">Drive</span>
+            </div>
           </div>
-          <div class="link" data-url="https://mail.google.com">
-            <img class="link-icon" src="./gmail.svg" alt="">
-            <span class="link-title">Gmail</span>
-          </div>
-          <div class="link" data-url="https://drive.google.com">
-            <img class="link-icon" src="./drive.svg" alt="">
-              <span class="link-title">Drive</span>
-          </div>
-          <div class="link">
+          <div id='custom-links'></div>
+          <div id="add-link" class="link">
             <img class="link-icon" src="./plus.svg" alt="">
             <span class="link-title">Add</span>
           </div>
@@ -46,8 +49,6 @@
     <div class="content-wrapper">
       <div class="tools">
         <div class="tool active">G</div>
-        <div class="tool active">J</div>
-        <div class="tool active">?</div>
       </div>
       <div id='quotebox'></div>
       <div class="all-goals">
@@ -161,6 +162,5 @@
     </div>  
   </div>
   <script type="module" src="./index.js"></script>
-    
   </body>
 </html>
