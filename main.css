@@ -97,6 +97,19 @@ h2 {
   transform: translateX(-50%)
 }
 
+.goal-selection {
+  font-style: italic;
+  font-size: 0.5em;
+  position: absolute;
+  bottom: 4px;
+  left: 8px;
+  cursor: pointer;
+}
+
+.selected-goal {
+  color: #8cd79f;
+}
+
 .goal-section {
   height: 50vh;
   width: 33%;
@@ -267,14 +280,14 @@ ul {
 }
 
 #timestamp {
-  font-size: 4em;
+  font-size: 5em;
   font-weight: bold;
   padding: 8px;
   color: #fff;
 }
 
 #weather {
-  max-width: 110px;
+  max-width: 105px;
   display: flex;
   flex-wrap: wrap;
   margin: 8px;
@@ -380,4 +393,6 @@ ul {
 .link:hover .link-x {
   display: block;
 }
+
+
 
