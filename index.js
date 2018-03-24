@@ -336,12 +336,14 @@ linksPopover.addEventListener('blur', (e) => {
   // linksPopover.classList.add('hidden');
 });
 
-let clickableLinks = document.getElementsByClassName('link');
-for(let i = 0; i < clickableLinks.length; i++ ) {
-  clickableLinks[i].addEventListener('click', (e) => {
-    let url = clickableLinks[i].getAttribute('data-url');
-    updateTabUrl(url);
-  });
+function makeLinksClickable() {
+  let clickableLinks = document.getElementsByClassName('link');
+  for(let i = 0; i < clickableLinks.length; i++ ) {
+    clickableLinks[i].addEventListener('click', (e) => {
+      let url = clickableLinks[i].getAttribute('data-url');
+      updateTabUrl(url);
+    });
+  }
 }
 
 const addBtn = document.getElementById('add-link');
@@ -380,7 +382,6 @@ function getLinks() {
   return new Promise(resolve => {
     chrome.storage.sync.get('links', (links) => {
       if(!links.links) {
-        
         resolve(links = []);
       } else {
         resolve(links.links);
@@ -417,13 +418,38 @@ function setLinks(linkArr) {
     let linkSpan = document.createElement('span');
     linkSpan.classList.add('link-title');
     linkSpan.innerHTML = link.siteName;
+    let linkX = document.createElement('span');
+    linkX.classList.add('link-x');
+    
+    linkX.innerHTML = '&#10005';
+    linkX.addEventListener('click', (e) => {
+      e.stopPropagation();
+      let url = e.target.parentNode.getAttribute('data-url');
+      removeLink(url);
+    });
 
     linkDiv.append(linkIcon)
     linkDiv.append(linkSpan);
+    linkDiv.append(linkX);
 
     customLinks.append(linkDiv);
   });
+  makeLinksClickable();
 }
+
+async function removeLink(url) {
+  let links = await getLinks();
+  let index = links.findIndex(link => link.url === url);
+  if(index > -1) {
+    links.splice(index, 1);
+  }
+  chrome.storage.sync.set({"links":links}, () => {
+    console.log('goal removed');
+  });
+  setLinks(links);
+}
+
+
 
 async function initLinks() {
   let links = await getLinks();
@@ -459,5 +485,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initLinks();
   initQuote();
   startTime();
+  makeLinksClickable();
   // getLocation();
 });

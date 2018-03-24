@@ -318,10 +318,12 @@ ul {
   color: #000;
   margin: 8px 16px;
   max-width: 55px;
+  cursor: pointer;
 }
 
 .link {
   margin-bottom: 8px;
+  position: relative;
 }
 
 .link-icon {
@@ -360,5 +362,22 @@ ul {
 
 #custom-links, #default-links{
   display: flex;
+}
+
+.link-x {
+  border: 0.5px solid #fff;
+  padding: 4px 6px;
+  font-size: 8px;
+  border-radius: 50%;
+  background: #CCC;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+  display: none;
+}
+
+.link:hover .link-x {
+  display: block;
 }
 
