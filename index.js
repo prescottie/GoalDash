@@ -1,5 +1,5 @@
-import {timeSince, toggleClass, startTime, checkTime, updateTabUrl} from './helpers.js';
-import {saveGoal, editGoals, removeGoal, getGoals, initGoals} from './goals.js';
+import {timeSince, toggleClass, startTime, checkTime, updateTabUrl, fadeOut} from './helpers.js';
+import {saveGoal, editGoals, removeGoal, getGoals, setGoals, getCurrentSelectedGoals, initGoals} from './goals.js';
 import {initQuote} from './quote.js';
 import {getLocation} from './weather.js';
 import {getLinks, addLink, initLinks, removeLink, makeLinksClickable} from './links.js';
@@ -85,14 +85,32 @@ addBtn.addEventListener('click', (e) => {
   });
 
   linkInput.addEventListener('blur', (e) => {
-    addBtn.removeChild(document.querySelector('.add-link-input'));
+    addBtn.removeChild(document.getElementsByClassName('add-link-input')[0]);
   });
 });
 
-
-
-
-
+const goalSelectionDivs = document.querySelectorAll('.goal-selection');
+goalSelectionDivs.forEach(div => {
+  div.addEventListener('click', (e) => {
+    if(!e.target.classList.contains('selected-goal')) {
+      if(e.target.innerHTML === 'active') {
+        e.target.nextElementSibling.classList.remove('selected-goal');
+        e.target.classList.add('selected-goal');
+        let period = e.target.parentNode.getAttribute('data-period')
+        getGoals(period).then(goals => {
+          setGoals(period, goals, 'active');
+        });
+      } else {
+        e.target.previousElementSibling.classList.remove('selected-goal');
+        e.target.classList.add('selected-goal');
+        let period = e.target.parentNode.getAttribute('data-period');
+        getGoals(period).then(goals => {
+          setGoals(period, goals, 'completed');
+        });
+      }
+    } 
+  });
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   getBackground();

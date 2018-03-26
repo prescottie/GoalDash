@@ -108,3 +108,15 @@ export function checkTime(i) {
 export function updateTabUrl(u) {
   chrome.tabs.update({ url: u });
 }
+
+export function fadeOut(el){
+  el.style.opacity = 1;
+
+  (function fade() {
+    if ((el.style.opacity -= .025) < 0) {
+      el.style.display = "none";
+    } else {
+      requestAnimationFrame(fade);
+    }
+  })();
+};

@@ -1,6 +1,6 @@
-import {timeSince, toggleClass, startTime, checkTime, updateTabUrl} from './helpers.js';
+import {timeSince, toggleClass, startTime, checkTime, updateTabUrl, fadeOut} from './helpers.js';
 
-export function setGoals(period, goals) { 
+export function setGoals(period, goals, currentStatus) { 
   if(!goals[period]) {
     return false;
   } else {
@@ -8,20 +8,22 @@ export function setGoals(period, goals) {
     while(ol.firstChild) {
       ol.removeChild(ol.firstChild);
     }
-    goals[period].forEach((goal,i) => {
+    let subset = goals[period].filter(goal => goal.status === currentStatus);
+    subset.forEach((goal,i) => {
       const li = document.createElement("li");
       const div = document.createElement('div');
       const span = document.createElement('span');
       const goalTime = document.createElement('time');
       const xButton = document.createElement('button');
       const checkbox = document.createElement('span');
-      checkbox.addEventListener('click', () => {
+      checkbox.addEventListener('click', (e) => {
         getGoals(period).then(goals => goals);
-        goals[period][i].status === "active" ? goals[period][i].status = "completed": goals[period][i].status = "false";
+        subset[i].status === "active" ? subset[i].status = "completed": subset[i].status = "active";
         chrome.storage.sync.set(goals, () => {
           console.log('goal updated');
         });
-        goals[period][i].status === "completed" ? toggleClass(checkbox, 'unchecked', 'checked') : toggleClass(checkbox, 'checked', 'unchecked');
+        subset[i].status === "completed" ? toggleClass(checkbox, 'unchecked', 'checked') : toggleClass(checkbox, 'checked', 'unchecked');
+        fadeOut(e.target.parentNode);
       });
 
       goal.status === "completed" ? toggleClass(checkbox, 'unchecked', 'checked') : toggleClass(checkbox, 'checked', 'unchecked');
@@ -80,6 +82,15 @@ export function getGoals(period) {
   });
 }
 
+export function getCurrentSelectedGoals(period) {
+  const children = document.getElementById(`${period}GoalSelection`).children;
+  for(let i = 0; i < children.length; i++) {
+    if(children[i].classList.contains('selected-goal')) {
+      return children[i].innerHTML;
+    }
+  }
+}
+
 export async function editGoals(period, prevValue, nextValue) {
   let goals = await getGoals(period);
   let index = goals[period].findIndex(g => g.value === prevValue);
@@ -91,7 +102,7 @@ export async function editGoals(period, prevValue, nextValue) {
       console.log('goal updated');
     });
   }
-  setGoals(period, goals);
+  setGoals(period, goals, getCurrentSelectedGoals(period));
 }
 
 export async function saveGoal(period, value) {
@@ -107,7 +118,7 @@ export async function saveGoal(period, value) {
   });
   console.log('set goal', goals);
   
-  setGoals(period, goals);
+  setGoals(period, goals, getCurrentSelectedGoals(period));
 }
 
 export async function removeGoal(period, value) {
@@ -119,7 +130,7 @@ export async function removeGoal(period, value) {
   chrome.storage.sync.set(goals, () => {
     console.log('goal removed');
   });
-  setGoals(period, goals);
+  setGoals(period, goals, getCurrentSelectedGoals(period));
 }
 
 export function getStarted() {
@@ -160,9 +171,9 @@ export async function initGoals() {
   let weekly = await getGoals('weekly');
   let yearly = await getGoals('yearly');
   
-  setGoals('daily', daily);
-  setGoals('weekly', weekly);
-  setGoals('yearly', yearly);
+  setGoals('daily', daily, 'active');
+  setGoals('weekly', weekly, 'active');
+  setGoals('yearly', yearly, 'active');
 
 }
 
